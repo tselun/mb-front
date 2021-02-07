@@ -25,8 +25,8 @@ export default function App() {
 
   useEffect(() => {
     handleFetch();
-    const interval = setInterval( ()=>{handleFetch()}, 1000)   
-    return()=>clearInterval(interval)
+    // const interval = setInterval( ()=>{handleFetch()}, 1000)   
+    // return()=>clearInterval(interval)
   }, []);
 
   let messages = msgs.map((msg) => <Message key={msg.id} id={msg.id} name={msg.name} msg={msg.msg} d={msg.d} t={msg.t} />);
