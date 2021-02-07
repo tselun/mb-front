@@ -13,6 +13,11 @@ body {
     text-align: center;
 }
 
+.nowrap{
+    display: inline-block;
+
+}
+
 .hide{
     position:absolute; 
     top:-1px; 
@@ -31,8 +36,9 @@ input {
 
 .messages {
     max-width: 800px;
-    width: 80vw;
-    height: 60vh;
+    min-width: 400px;
+    max-height: 500px;
+    min-height: 200px;
     margin: auto;
     margin-top: 20px;
     border-radius: 5px;
