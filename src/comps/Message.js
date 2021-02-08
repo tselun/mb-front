@@ -1,3 +1,7 @@
+// author: stephen chiu
+// date: feb 6, 2021
+// about: individual message component
+
 import React from 'react';
 
 export default function Message({ id, name, msg, d, t }) {
