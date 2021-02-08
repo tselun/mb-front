@@ -6,13 +6,17 @@ import React, { useState } from 'react';
 
 export default function Delete() { 
 
-    const [counter, setCounter] = useState(0);
-
-    function placeOrder(form){
-        form.submit();
-        setCounter(counter + 1);
-    }
-
+    function handleSubmit(e){ 
+        e.preventDefault();
+        fetch('https://mb-back.herokuapp.com/delete', {
+          method: 'post',
+          headers: { 'Content-Type': 'application/json' },
+          body: {
+            "id": msg.id;
+          }
+        })
+    
+      }
     return (
         <div className="nowrap">
             <p>delete a message: </p>

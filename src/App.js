@@ -4,12 +4,11 @@
 
 import React, { useState, useEffect } from 'react';
 import Message from './comps/Message';
-import Add from './comps/Add';
-import Delete from './comps/Delete';
 
 export default function App() {
   const [msgs, setMsgs] = useState([]);
 
+  // fetch all messages
   function handleFetch() { 
     fetch('https://mb-back.herokuapp.com/get')
     .then(res => res.json())
@@ -23,12 +22,18 @@ export default function App() {
     });
   }
 
+  // ugly work around to post then update state to trigger refresh...
+  function handleSubmit() {
+    document.getElementById('deleteform').submit();
+    setTimeout(() => { handleFetch() }, 500); // refresh page after 0.5s   
+    setTimeout(() => { handleFetch() }, 1000); // refresh page after 1s   
+  };
+
   useEffect(() => {
     handleFetch();
-    // const interval = setInterval( ()=>{handleFetch()}, 1000)   
-    // return()=>clearInterval(interval)
   }, []);
 
+  // turns msg object into messages for display
   let messages = msgs.map((msg) => <Message key={msg.id} id={msg.id} name={msg.name} msg={msg.msg} d={msg.d} t={msg.t} />);
   messages = messages.sort((a, b) => (parseInt(a.id) > parseInt(b.id) ? 1 : -1));
 
@@ -37,15 +42,31 @@ export default function App() {
       <div className="header">
         <p>welcome to message board</p>
       </div>
+      {/* main message box */}
       <div className="messages">
         {messages}
       </div>
       
-      <iframe name="hide" className="hide"></iframe>
+      <iframe title="hide" name="hide" className="hide" />
       <div className="footer">
-        <Add /> <Delete />
+        {/* add new message */}
+        <div className="nowrap">
+          <p>enter a new message: </p>
+          <form method="post" action="https://mb-back.herokuapp.com/add" id='addform' target="hide" >
+            <input type="text" name="name" placeholder="name" />
+            <input type="text" name="msg" placeholder="message" />
+            <input type="submit" value="submit" onClick={e => { handleSubmit('addform') }} />
+          </form>
+        </div>
+        {/* delete messsage */}
+        <div className="nowrap">
+          <p>delete a message: </p>
+          <form method="post" action='https://mb-back.herokuapp.com/delete' id='deleteform' target='hide'>
+            <input type="text" name="id" placeholder="id" />
+            <input type="submit" value="submit" onClick={e => { handleSubmit('deleteform') }} />
+          </form>
+        </div>
       </div>
-
     </div>
   );
 }
